@@ -1,2 +1,3 @@
+include 'annotations', 'processor', 'processor-example'
 rootProject.name = 'mod-helper'
 

@@ -3,7 +3,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "1.3.30"
     `java-gradle-plugin`
+    `maven-publish`
 }
+
+group = "io.github.cottonmc"
+version = "0.0.1"
 
 val junitPlatformVersion = "1.5.0-M1"
 val junitJupiterVersion = "5.5.0-M1"
