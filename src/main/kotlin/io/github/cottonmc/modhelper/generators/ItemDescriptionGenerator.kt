@@ -2,8 +2,8 @@ package io.github.cottonmc.modhelper.generators
 
 import com.google.gson.Gson
 import io.github.cottonmc.contentgenerator.data.ItemDefinition
-import io.github.cottonmc.contentgenerator.data.ItemType
-import io.github.cottonmc.contentgenerator.data.UseAction
+import io.github.cottonmc.modhelper.api.ItemType
+import io.github.cottonmc.modhelper.api.UseAction
 import java.util.function.Function
 
 class ItemDescriptionGenerator(val modid: String) : Function<ItemDefinition, String> {
@@ -16,8 +16,8 @@ class ItemDescriptionGenerator(val modid: String) : Function<ItemDefinition, Str
             val name: String,
             val useAction: UseAction = UseAction.NORMAL,
             val maxDamage: Int = 0,
-            val type:ItemType=ItemType.NONE,
-            val material:String=""
+            val type: ItemType = ItemType.NONE,
+            val material: String = ""
     ) {
         constructor(definition: ItemDefinition) : this(
                 name = {

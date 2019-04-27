@@ -1,5 +1,5 @@
 plugins {
-    id("fabric-loom") version "0.2.1-SNAPSHOT"
+    //id("fabric-loom") version "0.2.1-SNAPSHOT"
     `maven-publish`
     id("com.github.johnrengelman.shadow") version "4.0.2"
     java
@@ -34,13 +34,22 @@ val fabric_version:String by project
 
 dependencies {
 
-    minecraft("com.mojang:minecraft:$minecraft_version")
-    mappings("net.fabricmc:yarn:$yarn_mappings")
+//    minecraft("com.mojang:minecraft:$minecraft_version")
+//    mappings("net.fabricmc:yarn:$yarn_mappings")
 
-    modCompile("net.fabricmc:fabric:$fabric_version")
+//    modCompile("net.fabricmc:fabric:$fabric_version")
 
 }
 
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            artifactId = "mod-helper-api"
+            from(components["java"])
+        }
+    }
 }

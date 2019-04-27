@@ -1,5 +1,8 @@
 package io.github.cottonmc.contentgenerator.data;
 
+import io.github.cottonmc.modhelper.api.ItemType;
+import io.github.cottonmc.modhelper.api.UseAction;
+
 import java.util.List;
 
 public class ItemTemplateDefinition {
