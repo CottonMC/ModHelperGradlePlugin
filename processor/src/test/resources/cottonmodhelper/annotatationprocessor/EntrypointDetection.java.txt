@@ -20,6 +20,7 @@ import net.fabricmc.api.ModInitializer;
 public class EntrypointDetection implements ModInitializer {
     @Override public void onInitialize() {}
 
+    @Initializer
     public static class Client implements ClientModInitializer {
         @Override public void onInitializeClient() {}
     }
