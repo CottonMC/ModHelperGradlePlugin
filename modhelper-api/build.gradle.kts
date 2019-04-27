@@ -9,24 +9,24 @@ group = "io.github.cottonmc"
 version = "0.1.0"
 
 repositories {
-     maven {
-            setUrl("http://maven.fabricmc.net/")
-            name = "Fabric"
-        }
-        maven {
-            setUrl("https://kotlin.bintray.com/kotlinx")
-            name = "Kotlin X"
-        }
-        maven {
-            setUrl("http://server.bbkr.space:8081/artifactory/libs-release")
-            name = "cotton"
-        }
-        maven {
-            setUrl("http://server.bbkr.space:8081/artifactory/libs-snapshot")
-            name = "cotton"
-        }
-        mavenCentral()
-        mavenLocal()
+    maven {
+        setUrl("http://maven.fabricmc.net/")
+        name = "Fabric"
+    }
+    maven {
+        setUrl("https://kotlin.bintray.com/kotlinx")
+        name = "Kotlin X"
+    }
+    maven {
+        setUrl("http://server.bbkr.space:8081/artifactory/libs-release")
+        name = "cotton"
+    }
+    maven {
+        setUrl("http://server.bbkr.space:8081/artifactory/libs-snapshot")
+        name = "cotton"
+    }
+    mavenCentral()
+    mavenLocal()
 }
 val minecraft_version :String by project
 val yarn_mappings :String by project

@@ -50,7 +50,7 @@ internal class CottonAnnotationProcessor : AbstractProcessor() {
             }
 
             addInitializer(
-                annotation.entryPoint.name.toLowerCase(),
+                entrypointType,
                 if (annotation.adapter == "") {
                     reference
                 } else mapOf("value" to reference, "adapter" to annotation.adapter)
