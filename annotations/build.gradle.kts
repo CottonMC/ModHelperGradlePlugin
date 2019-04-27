@@ -9,6 +9,13 @@ base {
 }
 version = "0.0.1"
 
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+}
+
 publishing {
     publications {
         create<MavenPublication>("maven") {

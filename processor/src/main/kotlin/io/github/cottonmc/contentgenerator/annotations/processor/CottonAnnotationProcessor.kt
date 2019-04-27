@@ -1,7 +1,7 @@
 package io.github.cottonmc.contentgenerator.annotations.processor
 
 import com.google.gson.Gson
-import io.github.cottonmc.contentgenerator.annotations.Initializer
+import io.github.cottonmc.modhelper.annotations.Initializer
 import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.SourceVersion
@@ -50,7 +50,7 @@ internal class CottonAnnotationProcessor : AbstractProcessor() {
             }
 
             addInitializer(
-                annotation.entrypointType,
+                annotation.entryPoint.name.toLowerCase(),
                 if (annotation.adapter == "") {
                     reference
                 } else mapOf("value" to reference, "adapter" to annotation.adapter)
@@ -77,5 +77,6 @@ internal class CottonAnnotationProcessor : AbstractProcessor() {
         Initializer::class.java.name
     )
 
-    override fun getSupportedSourceVersion() = SourceVersion.latestSupported()
+    //only support release 8, we do not want to mess with mixins.
+    override fun getSupportedSourceVersion() = SourceVersion.RELEASE_8
 }
