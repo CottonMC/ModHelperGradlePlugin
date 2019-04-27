@@ -7,6 +7,7 @@ import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.jvm.tasks.Jar
 import org.gradle.language.jvm.tasks.ProcessResources
+import java.util.Locale
 
 open class ContentGeneratorPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -27,11 +28,15 @@ open class ContentGeneratorPlugin : Plugin<Project> {
         val generateModJson = target.tasks.create("generateModJson", GenerateModJsonTask::class.java)
 
         // Set up defaults for fabric.mod.json
-        extension.modid = target.name.replace(" ","_").toLowerCase()
+        extension.modid = target.name.replace(" ","_").toLowerCase(Locale.ROOT)
         extension.modName = target.name
-        extension.version = target.version.toString()
 
         target.afterEvaluate {
+            // Fill in version if missing
+            if (extension.version.isEmpty()) {
+                extension.version = target.version.toString()
+            }
+
             // Add basic mod-helper dependencies
             target.dependencies.add("compileOnly", "io.github.cottonmc:mod-helper-annotations:0.0.1")
 
