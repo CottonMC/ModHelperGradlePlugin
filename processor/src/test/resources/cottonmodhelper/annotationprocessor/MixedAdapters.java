@@ -22,6 +22,6 @@ import net.fabricmc.api.ModInitializer;
 public class MixedAdapters implements ModInitializer {
     @Override public void onInitialize() {}
 
-    @Initializer(entrypointType = Entrypoints.CLIENT, adapter = "kotlin")
+    @Initializer(value = Entrypoints.CLIENT, adapter = "kotlin")
     public static void initClient() {}
 }

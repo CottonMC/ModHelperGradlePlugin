@@ -19,6 +19,6 @@ import net.fabricmc.api.ModInitializer;
 public class MultipleInitializers implements ModInitializer {
     @Override public void onInitialize() {}
 
-    @Initializer(entrypointType = Entrypoints.CLIENT)
+    @Initializer(value = Entrypoints.CLIENT)
     public static void initClient() {}
 }
