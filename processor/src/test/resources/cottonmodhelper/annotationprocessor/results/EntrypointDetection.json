@@ -1,9 +1,11 @@
-
 {
   "main": [
     "io.github.cottonmc.modhelper.annotations.test.EntrypointDetection"
   ],
   "client": [
     "io.github.cottonmc.modhelper.annotations.test.EntrypointDetection$Client"
+  ],
+  "server": [
+    "io.github.cottonmc.modhelper.annotations.test.EntrypointDetection$Server"
   ]
 }

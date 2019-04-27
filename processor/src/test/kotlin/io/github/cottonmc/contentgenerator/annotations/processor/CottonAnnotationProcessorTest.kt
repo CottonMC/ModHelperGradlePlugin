@@ -35,7 +35,7 @@ internal class CottonAnnotationProcessorTest {
             "SingleInitializer"
         ]
     )
-    fun `the processor recognises clases with initializers`(source: String) {
+    fun `the processor recognises classes with initializers`(source: String) {
 
         compilationTest()
             .addSources(JavaFileObjectUtils.readFromResource("/cottonmodhelper/annotationprocessor/$source.java"))

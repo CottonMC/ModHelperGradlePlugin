@@ -1,4 +1,3 @@
-
 {
   "main": [
     "io.github.cottonmc.modhelper.annotations.test.MultipleInitializers"

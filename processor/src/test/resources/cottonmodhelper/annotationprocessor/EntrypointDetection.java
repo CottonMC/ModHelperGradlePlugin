@@ -3,6 +3,7 @@ package io.github.cottonmc.modhelper.annotations.test;
 import io.github.cottonmc.modhelper.annotations.Entrypoints;
 import io.github.cottonmc.modhelper.annotations.Initializer;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.api.ModInitializer;
 
 // Should output:
@@ -23,5 +24,10 @@ public class EntrypointDetection implements ModInitializer {
     @Initializer
     public static class Client implements ClientModInitializer {
         @Override public void onInitializeClient() {}
+    }
+
+    @Initializer
+    public static class Server implements DedicatedServerModInitializer {
+        @Override public void onInitializeServer() {}
     }
 }

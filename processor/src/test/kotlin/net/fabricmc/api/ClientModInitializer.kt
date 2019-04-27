@@ -7,3 +7,7 @@ interface ClientModInitializer {
 interface ModInitializer {
     fun onInitialize()
 }
+
+interface DedicatedServerModInitializer {
+    fun onInitializeServer()
+}
