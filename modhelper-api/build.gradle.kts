@@ -30,11 +30,15 @@ repositories {
 }
 val minecraft_version :String by project
 val yarn_mappings :String by project
+val fabric_version:String by project
 
 dependencies {
 
-    minecraft("com.mojang:minecraft:${minecraft_version}")
-    mappings("net.fabricmc:yarn:${yarn_mappings}")
+    minecraft("com.mojang:minecraft:$minecraft_version")
+    mappings("net.fabricmc:yarn:$yarn_mappings")
+
+    modCompile("net.fabricmc:fabric:$fabric_version")
+
 }
 
 configure<JavaPluginConvention> {
