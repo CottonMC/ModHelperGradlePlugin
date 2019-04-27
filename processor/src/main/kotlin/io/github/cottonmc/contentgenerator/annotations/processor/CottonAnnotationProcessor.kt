@@ -8,6 +8,7 @@ import javax.lang.model.SourceVersion
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.TypeElement
 import javax.lang.model.element.VariableElement
+import javax.lang.model.type.DeclaredType
 import javax.tools.Diagnostic
 import javax.tools.StandardLocation
 
@@ -38,7 +39,7 @@ internal class CottonAnnotationProcessor : AbstractProcessor() {
             }
 
             val annotation = element.getAnnotation(Initializer::class.java)
-            var entrypointType = annotation.entrypointType
+            var entrypointType = annotation.value
 
             if (entrypointType.isEmpty()) {
                 if (element !is TypeElement) {
@@ -46,7 +47,17 @@ internal class CottonAnnotationProcessor : AbstractProcessor() {
                     continue@loop
                 }
 
-                // TODO: Check for fabric-loader initializer interfaces here
+                for (type in AutomaticEntrypointTypes.values()) {
+                    val hasMarker = element.interfaces.any {
+                        it is DeclaredType &&
+                                (it.asElement() as? TypeElement)?.qualifiedName.toString() == type.markerInterface
+                    }
+
+                    if (hasMarker) {
+                        entrypointType = type.entrypointType
+                        break
+                    }
+                }
             }
 
             addInitializer(
@@ -79,4 +90,16 @@ internal class CottonAnnotationProcessor : AbstractProcessor() {
 
     //only support release 8, we do not want to mess with mixins.
     override fun getSupportedSourceVersion() = SourceVersion.RELEASE_8
+
+    private enum class AutomaticEntrypointTypes(val markerInterface: String, val entrypointType: String) {
+        MAIN(MOD_INITIALIZER, "main"),
+        CLIENT(CLIENT_MOD_INITIALIZER, "client"),
+        SERVER(SERVER_MOD_INITIALIZER, "server")
+    }
+
+    companion object {
+        private const val MOD_INITIALIZER = "net.fabricmc.api.ModInitializer"
+        private const val CLIENT_MOD_INITIALIZER = "net.fabricmc.api.ClientModInitializer"
+        private const val SERVER_MOD_INITIALIZER = "net.fabricmc.api.DedicatedServerModInitializer"
+    }
 }

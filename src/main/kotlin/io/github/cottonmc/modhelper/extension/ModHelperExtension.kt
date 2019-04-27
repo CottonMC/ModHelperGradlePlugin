@@ -5,4 +5,6 @@ open class ModHelperExtension {
     var modname: String = ""
     var description: String = ""
     var annotationProcessor: AnnotationProcessor = AnnotationProcessor.JAVA
+    var cottonGeneratedOutputPath: String = "build/cotton/"
+    var debug: Boolean = false
 }

@@ -44,7 +44,9 @@ open class ContentGeneratorPlugin : Plugin<Project> {
             generateModJson.dependsOn(target.tasks.getByName("compileJava"))
 
             // Remove build/cotton files from the output
-            (target.tasks.getByName("jar") as Jar).exclude("build/cotton/**")
+            if (!extension.debug) {
+                (target.tasks.getByName("jar") as Jar).exclude(extension.cottonGeneratedOutputPath)
+            }
         }
     }
 

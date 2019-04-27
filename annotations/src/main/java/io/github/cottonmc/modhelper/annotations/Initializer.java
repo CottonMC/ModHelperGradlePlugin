@@ -20,7 +20,7 @@ public @interface Initializer {
      * @return the entrypoint type
      * @see Entrypoints
      */
-    String entrypointType() default "";
+    String value() default "";
 
     /**
      * The language adapter.
