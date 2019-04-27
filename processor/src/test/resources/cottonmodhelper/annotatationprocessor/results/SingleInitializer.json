@@ -1,0 +1,5 @@
+{
+  "main": [
+    "io.github.cottonmc.modhelper.annotations.test.SingleInitializer"
+  ]
+}

@@ -28,6 +28,7 @@ dependencies {
 
     testCompile(group = "org.junit.platform", name = "junit-platform-launcher", version = junitPlatformVersion)
     testCompile(group = "org.junit.platform", name = "junit-platform-runner", version = junitPlatformVersion)
+    testCompile("io.toolisticon.compiletesting:compiletesting:0.4.0")
     testCompile(group = "com.google.testing.compile", name = "compile-testing", version = "0.15")
     testCompile(
         "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion"

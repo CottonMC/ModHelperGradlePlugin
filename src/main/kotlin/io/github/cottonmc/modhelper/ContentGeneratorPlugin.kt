@@ -21,8 +21,8 @@ open class ContentGeneratorPlugin : Plugin<Project> {
 
         // TODO: Remove
         target.repositories.mavenLocal()
-
         val extension = target.extensions.create("modHelper", ModHelperExtension::class.java)
+
         val generateModJson = target.tasks.create("generateModJson", GenerateModJsonTask::class.java)
 
         // Set up defaults for fabric.mod.json

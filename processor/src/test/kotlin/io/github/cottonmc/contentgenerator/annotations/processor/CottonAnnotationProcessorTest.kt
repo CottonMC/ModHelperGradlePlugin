@@ -1,17 +1,22 @@
 package io.github.cottonmc.contentgenerator.annotations.processor
 
-import com.google.testing.compile.CompilationSubject.assertThat
-import com.google.testing.compile.Compiler.javac
-import com.google.testing.compile.JavaFileObjects
-import org.junit.jupiter.api.*
+import com.google.gson.Gson
+import com.google.gson.JsonObject
+import io.toolisticon.compiletesting.CompileTestBuilder.compilationTest
+import io.toolisticon.compiletesting.GeneratedFileObjectMatcher
+import io.toolisticon.compiletesting.JavaFileObjectUtils
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
-import javax.annotation.processing.SupportedSourceVersion
 import javax.lang.model.SourceVersion
+import javax.tools.StandardLocation
 
 internal class CottonAnnotationProcessorTest {
+
 
     @BeforeEach
     fun setUp() {
@@ -21,29 +26,47 @@ internal class CottonAnnotationProcessorTest {
     fun tearDown() {
     }
 
-    //TODO add class sources to this
     @ParameterizedTest
     @ValueSource(
         strings = [
-            """
-                class Init implements ClientInitializer{
-
-
-                }
-            """
+            "EntrypointDetection",
+            "MixedAdapters",
+            "MultipleInitializers",
+            "SingleInitializer"
         ]
     )
-    fun `the processor recognises clases with initializers`(source:String) {
-        val compilation =
-            javac()
-                .compile(
-                    JavaFileObjects
-                        .forSourceString(
-                            "HelloWorld",
-                            "final class HelloWorld {}"
-                        )
-                )
-        assertThat(compilation).succeeded()
+    fun `the processor recognises clases with initializers`(source: String) {
+
+        compilationTest()
+            .addSources(JavaFileObjectUtils.readFromResource("/cottonmodhelper/annotatationprocessor/$source.java"))
+            .addProcessors(CottonAnnotationProcessor::class.java)
+            .compilationShouldSucceed()
+            .expectedFileObjectExists(
+                StandardLocation.SOURCE_OUTPUT,
+                "build.cotton",
+                "initializers.json",
+                GeneratedFileObjectMatcher(({
+                    println(it.name)
+                    if(it.name == "/SOURCE_OUTPUT/build/cotton/initializers.json")
+                    {
+                        val reader = it.openReader(true)
+                        val readText = reader.readText()
+                        val generated = Gson().fromJson<JsonObject>(readText, JsonObject::class.java)
+
+                        val content = "/cottonmodhelper/annotatationprocessor/results/$source.json".loadLines()
+                            .joinToString(separator = "")
+
+                        val expected = Gson().fromJson<JsonObject>(content, JsonObject::class.java)
+
+                        assertEquals(expected,generated, "generated file contents are invalid")
+                    }
+
+                    true
+                }))
+                //JavaFileObjectUtils.readFromString("")
+            )
+            .testCompilation()
+
     }
 
     @ParameterizedTest
@@ -65,4 +88,6 @@ internal class CottonAnnotationProcessorTest {
             "only java 8 should be supported!"
         )
     }
+
+
 }
