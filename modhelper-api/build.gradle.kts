@@ -1,5 +1,5 @@
 plugins {
-    //id("fabric-loom") version "0.2.1-SNAPSHOT"
+    // id("fabric-loom") //version "0.2.1-SNAPSHOT"
     `maven-publish`
     id("com.github.johnrengelman.shadow") version "4.0.2"
     java
@@ -28,16 +28,18 @@ repositories {
     mavenCentral()
     mavenLocal()
 }
-val minecraft_version :String by project
-val yarn_mappings :String by project
-val fabric_version:String by project
+val minecraft_version: String by project
+val yarn_mappings: String by project
+val fabric_version: String by project
+val loader_version: String by project
 
 dependencies {
 
-//    minecraft("com.mojang:minecraft:$minecraft_version")
-//    mappings("net.fabricmc:yarn:$yarn_mappings")
+    //  minecraft("com.mojang:minecraft:$minecraft_version")
+    // mappings("net.fabricmc:yarn:$yarn_mappings")
+    // modCompile("net.fabricmc:fabric-loader:${loader_version}")
 
-//    modCompile("net.fabricmc:fabric:$fabric_version")
+//modCompile("net.fabricmc:fabric:$fabric_version")
 
 }
 

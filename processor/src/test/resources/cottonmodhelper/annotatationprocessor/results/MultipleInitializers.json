@@ -1,0 +1,9 @@
+
+{
+  "main": [
+    "io.github.cottonmc.modhelper.annotations.test.MultipleInitializers"
+  ],
+  "client": [
+    "io.github.cottonmc.modhelper.annotations.test.MultipleInitializers::initClient"
+  ]
+}

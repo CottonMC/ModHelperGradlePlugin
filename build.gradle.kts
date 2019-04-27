@@ -1,6 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+   // id("fabric-loom") version "0.2.1-SNAPSHOT" apply false
+
     kotlin("jvm") version "1.3.30"
     `java-gradle-plugin`
     `maven-publish`
@@ -14,7 +16,7 @@ val junitPlatformVersion = "1.5.0-M1"
 val junitJupiterVersion = "5.5.0-M1"
 
 dependencies {
-    gradleTestKit()
+    testCompile(gradleTestKit())
     implementation(kotlin("stdlib-jdk8"))
     compile("com.squareup:javapoet:1.11.1")
     compile(group = "io.github.cottonmc", name = "json-factory", version = "0.4.1")
@@ -28,7 +30,7 @@ dependencies {
     testCompile(group = "com.google.testing.compile", name = "compile-testing", version = "0.15")
     compile(project(":modhelper-api"))
     compile(project(":annotations"))
-
+    testCompile("org.junit-pioneer:junit-pioneer:0.3.0")
     //implementation(group="com.google.auto.service",name="auto-service",version="1.0")
     //annotationProcessor(group="com.google.auto.service",name="auto-service",version="1.0")
 }

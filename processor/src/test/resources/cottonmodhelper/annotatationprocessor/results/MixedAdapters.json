@@ -1,0 +1,11 @@
+{
+  "main": [
+    "io.github.cottonmc.modhelper.annotations.test.MixedAdapters"
+  ],
+  "client": [
+    {
+      "value": "io.github.cottonmc.modhelper.annotations.test.MixedAdapters::initClient",
+      "adapter": "kotlin"
+    }
+  ]
+}
