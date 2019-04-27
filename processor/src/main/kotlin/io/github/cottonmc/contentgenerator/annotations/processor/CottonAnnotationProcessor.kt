@@ -26,10 +26,10 @@ internal class CottonAnnotationProcessor : AbstractProcessor() {
 
         loop@ for (element in roundEnv.getElementsAnnotatedWith(Initializer::class.java)) {
             val reference: String = when (element) {
-                is TypeElement -> element.qualifiedName.toString()
-                is ExecutableElement -> (element.enclosingElement as TypeElement).qualifiedName.toString() + "::" +
+                is TypeElement -> getBinaryName(element)
+                is ExecutableElement -> getBinaryName(element.enclosingElement as TypeElement) + "::" +
                         element.simpleName
-                is VariableElement -> (element.enclosingElement as TypeElement).qualifiedName.toString() + "::" +
+                is VariableElement -> getBinaryName(element.enclosingElement as TypeElement) + "::" +
                         element.simpleName
 
                 else -> {
@@ -96,6 +96,9 @@ internal class CottonAnnotationProcessor : AbstractProcessor() {
         CLIENT(CLIENT_MOD_INITIALIZER, "client"),
         SERVER(SERVER_MOD_INITIALIZER, "server")
     }
+
+    private fun getBinaryName(element: TypeElement): String =
+        processingEnv.elementUtils.getBinaryName(element).toString()
 
     companion object {
         private const val MOD_INITIALIZER = "net.fabricmc.api.ModInitializer"

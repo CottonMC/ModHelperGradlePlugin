@@ -27,7 +27,8 @@ open class ContentGeneratorPlugin : Plugin<Project> {
 
         // Set up defaults for fabric.mod.json
         extension.modid = target.name.replace(" ","_").toLowerCase()
-        extension.modname = target.name
+        extension.modName = target.name
+        extension.version = target.version.toString()
 
         target.afterEvaluate {
             // Add basic mod-helper dependencies

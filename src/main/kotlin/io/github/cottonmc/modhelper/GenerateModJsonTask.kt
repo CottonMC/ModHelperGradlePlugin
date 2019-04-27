@@ -18,20 +18,24 @@ open class GenerateModJsonTask : DefaultTask() {
         }
 
     @Input
-    var generatedInputPath = "build/classes/java/main/build/cotton/"
+    var generatedInputPath = "build/classes/java/main/"
 
     @TaskAction
     fun generateModJson() {
         val extension = getModHelperExtension()
         val generator = FabricModJsonGenerator()
+        val processorOutputPath =
+            project.file(generatedInputPath)
+                .resolve("build")
+                .resolve("cotton")
 
         val fabricModJson = FabricModJson().apply {
             id = extension.modid
-            name = extension.modname
-            version = project.version.toString()
+            name = extension.modName
+            version = extension.version
             description = extension.description
             entrypoints = generator.gson.fromJson(
-                project.file(generatedInputPath).resolve("initializers.json").reader(),
+                processorOutputPath.resolve("initializers.json").reader(),
                 FabricEntrypointContainer::class.java
             )
         }
