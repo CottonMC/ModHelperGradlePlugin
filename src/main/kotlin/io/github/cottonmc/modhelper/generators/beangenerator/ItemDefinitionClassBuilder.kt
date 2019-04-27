@@ -1,14 +1,15 @@
-package io.github.cottonmc.modhelper.beangenerator
+package io.github.cottonmc.modhelper.generators.beangenerator
 
 import com.google.gson.Gson
 import com.squareup.javapoet.MethodSpec
 import com.squareup.javapoet.TypeSpec.classBuilder
 import io.github.cottonmc.modhelper.generators.ItemDescriptionGenerator
-import io.github.cottonmc.contentgenerator.data.ItemType
-import io.github.cottonmc.contentgenerator.data.UseAction
-import io.github.cottonmc.contentgenerator.data.types.ItemDefinitionType
+
 import com.squareup.javapoet.JavaFile
 import com.squareup.javapoet.TypeName
+import io.github.cottonmc.modhelper.api.ItemType
+import io.github.cottonmc.modhelper.api.UseAction
+import io.github.cottonmc.modhelper.api.types.ItemDefinitionType
 import java.io.StringWriter
 import javax.lang.model.element.Modifier
 

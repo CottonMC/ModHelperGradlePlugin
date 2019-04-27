@@ -1,6 +1,7 @@
 package io.github.cottonmc.modhelper
 
 import io.github.cottonmc.modhelper.extension.ModHelperExtension
+import io.github.cottonmc.modhelper.config.ModConfig
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSetContainer
@@ -18,6 +19,9 @@ open class ContentGeneratorPlugin : Plugin<Project> {
         target.repositories.mavenLocal()
         target.extensions.create("modHelper", ModHelperExtension::class.java)
 
+        extension.modid = target.name.replace(" ","_").toLowerCase()
+        extension.modname = target.name
+
         target.afterEvaluate {
             val extension = target.extensions.getByType(ModHelperExtension::class.java)
             // TODO: Fix artifact IDs
@@ -27,8 +31,6 @@ open class ContentGeneratorPlugin : Plugin<Project> {
             target.tasks.create("generateModJson", GenerateModJsonTask::class.java)
             target.tasks.getByPath("jar").dependsOn("generateModJson")
         }
-
-        //target.dependencies.add("compile",":compileGenerated_libsJava")
     }
 
 }

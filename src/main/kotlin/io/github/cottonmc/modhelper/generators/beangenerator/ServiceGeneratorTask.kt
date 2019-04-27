@@ -1,13 +1,10 @@
-package io.github.cottonmc.modhelper.beangenerator
+package io.github.cottonmc.modhelper.generators.beangenerator
 
-import com.google.gson.Gson
-import com.google.gson.JsonObject
-import io.github.cottonmc.contentgenerator.data.types.ItemDefinitionType
+import io.github.cottonmc.modhelper.api.types.ItemDefinitionType
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import java.io.File
-import java.nio.file.Paths
 
 open class ServiceGeneratorTask : DefaultTask() {
 
@@ -28,7 +25,7 @@ open class ServiceGeneratorTask : DefaultTask() {
             ItemDefinitionClassBuilder(packageName)
         val services = ArrayList<String>()
 
-        File(dataFolder+"/descriptions/$modid/item/")
+        File("$dataFolder/descriptions/$modid/item/")
                 .listFiles()
                 .filter {
                     !it.endsWith(".json")

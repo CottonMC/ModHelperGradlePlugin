@@ -1,6 +1,5 @@
 plugins {
     java
-    kotlin("jvm")
     `maven-publish`
 }
 
@@ -15,7 +14,6 @@ repositories {
 }
 
 dependencies {
-    api(kotlin("stdlib-jdk8"))
 }
 
 publishing {

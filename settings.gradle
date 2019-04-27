@@ -1,3 +1,17 @@
+pluginManagement {
+    repositories {
+        jcenter()
+        maven {
+            name = 'Fabric'
+            url = 'https://maven.fabricmc.net/'
+        }
+        gradlePluginPortal()
+    }
+}
+
+
+
 include 'annotations', 'processor', 'processor-example'
 rootProject.name = 'mod-helper'
+include 'modhelper-api'
 
