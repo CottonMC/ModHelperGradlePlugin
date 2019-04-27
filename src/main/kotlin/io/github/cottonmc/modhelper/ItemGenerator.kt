@@ -13,7 +13,7 @@ import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 import java.io.File
 
-open class ItemGenerator : DefaultTask() {
+open class ItemGenerator : CottonDefaultTask() {
 
     @Internal
     val definitions: MutableMap<String, ItemTemplateDefinition> = HashMap()

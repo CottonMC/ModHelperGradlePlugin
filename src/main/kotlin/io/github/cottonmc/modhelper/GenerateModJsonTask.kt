@@ -9,10 +9,10 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import java.io.File
 
-open class GenerateModJsonTask : DefaultTask() {
+open class GenerateModJsonTask : CottonDefaultTask() {
     val output: File
         get() {
-            val resourceRoot = project.file(getModHelperExtension().cottonGeneratedOutputPath)
+            val resourceRoot = project.file(getModHelperExtension().generatedResourceOutputPath)
             resourceRoot.mkdirs()
             return resourceRoot.resolve("fabric.mod.json")
         }

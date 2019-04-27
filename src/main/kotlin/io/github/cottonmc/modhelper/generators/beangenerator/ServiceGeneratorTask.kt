@@ -1,12 +1,12 @@
 package io.github.cottonmc.modhelper.generators.beangenerator
 
+import io.github.cottonmc.modhelper.CottonDefaultTask
 import io.github.cottonmc.modhelper.api.types.ItemDefinitionType
-import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import java.io.File
 
-open class ServiceGeneratorTask : DefaultTask() {
+open class ServiceGeneratorTask : CottonDefaultTask() {
 
     @Input
     var modid:String =""

@@ -1,5 +1,6 @@
 package io.github.cottonmc.modhelper
 
+import io.github.cottonmc.modhelper.extension.AnnotationProcessor
 import io.github.cottonmc.modhelper.extension.ModHelperExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -33,7 +34,16 @@ open class ContentGeneratorPlugin : Plugin<Project> {
         target.afterEvaluate {
             // Add basic mod-helper dependencies
             target.dependencies.add("compileOnly", "io.github.cottonmc:mod-helper-annotations:0.0.1")
-            target.dependencies.add(extension.annotationProcessor.configuration, "io.github.cottonmc:mod-helper-processor:0.0.1")
+
+            when (extension.annotationProcessor) {
+                AnnotationProcessor.JAVA -> target.dependencies.add(
+                    extension.annotationProcessor.configuration,
+                    "io.github.cottonmc:mod-helper-processor:0.0.1"
+                )
+                AnnotationProcessor.KAPT -> {
+                    System.err.println("Note: kapt not supported yet")
+                }
+            }
 
             // TODO: Figure out why runClient doesn't find a mod
             // Add fabric.mod.json
@@ -44,9 +54,10 @@ open class ContentGeneratorPlugin : Plugin<Project> {
             // Make sure that the annotation processor gets run before generateModJson
             generateModJson.dependsOn(target.tasks.getByName("compileJava"))
 
-            // Remove build/cotton files from the output
+            // Remove build/cotton files made by the annotation processor from the output.
+            // This build/cotton is NOT related to the build/cotton in ModHelperExtension!
             if (!extension.debug) {
-                (target.tasks.getByName("jar") as Jar).exclude(extension.cottonGeneratedOutputPath)
+                (target.tasks.getByName("jar") as Jar).exclude("build/cotton/**")
             }
         }
     }
