@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 
 class FabricModJson {
-    var schemaVersion: String = "1"
+    var schemaVersion: Int = 1
     var id: String = ""
     var name: String = ""
     var version: String = ""
