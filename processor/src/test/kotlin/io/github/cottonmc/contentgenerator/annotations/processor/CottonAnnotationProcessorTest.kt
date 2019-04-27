@@ -53,7 +53,7 @@ internal class CottonAnnotationProcessorTest {
                         val readText = reader.readText()
                         val generated = Gson().fromJson<JsonObject>(readText, JsonObject::class.java)
 
-                        val content = "/cottonmodhelper/annotatationprocessor/results/$source.json".loadLines()
+                        val content = "/cottonmodhelper/annotationprocessor/results/$source.json".loadLines()
                             .joinToString(separator = "")
 
                         val expected = Gson().fromJson<JsonObject>(content, JsonObject::class.java)
