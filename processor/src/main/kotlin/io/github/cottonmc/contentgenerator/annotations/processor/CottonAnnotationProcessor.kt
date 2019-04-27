@@ -38,6 +38,17 @@ internal class CottonAnnotationProcessor : AbstractProcessor() {
             }
 
             val annotation = element.getAnnotation(Initializer::class.java)
+            var entrypointType = annotation.entrypointType
+
+            if (entrypointType.isEmpty()) {
+                if (element !is TypeElement) {
+                    processingEnv.messager.printMessage(Diagnostic.Kind.ERROR, "Missing entrypointType on a non-type element: ${element.simpleName}")
+                    continue@loop
+                }
+
+                // TODO: Check for fabric-loader initializer interfaces here
+            }
+
             addInitializer(
                 annotation.entrypointType,
                 if (annotation.adapter == "") {
