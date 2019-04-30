@@ -1,1 +1,2 @@
 io.github.cottonmc.contentgenerator.annotations.processor.CottonAnnotationProcessor
+io.github.cottonmc.contentgenerator.annotations.processor.CottonEventsAnnotationProcessor

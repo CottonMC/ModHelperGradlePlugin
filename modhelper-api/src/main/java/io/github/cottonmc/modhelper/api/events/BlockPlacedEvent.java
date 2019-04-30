@@ -3,10 +3,10 @@ package io.github.cottonmc.modhelper.api.events;
 
 @EventDescriptor(
         mixinString = "",
-        targetClass = String.class
+        targetClass = "java.lang.String",
+        methodInfo = {}
 )
 public interface BlockPlacedEvent {
-
 
 
 }

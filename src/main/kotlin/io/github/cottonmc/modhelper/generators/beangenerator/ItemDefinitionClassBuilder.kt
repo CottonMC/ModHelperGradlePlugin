@@ -8,7 +8,6 @@ import io.github.cottonmc.modhelper.generators.ItemDescriptionGenerator
 import com.squareup.javapoet.JavaFile
 import com.squareup.javapoet.TypeName
 import io.github.cottonmc.modhelper.api.ItemType
-import io.github.cottonmc.modhelper.api.UseAction
 import io.github.cottonmc.modhelper.api.types.ItemDefinitionType
 import java.io.StringWriter
 import javax.lang.model.element.Modifier
@@ -28,13 +27,6 @@ class ItemDefinitionClassBuilder(val packageName: String) {
                         .addModifiers(Modifier.PUBLIC)
                         .returns(String::class.java)
                         .addCode("return \$S;", fromJson.material)
-                        .build()
-                )
-                .addMethod(MethodSpec.methodBuilder("getUseAction")
-                        .addAnnotation(Override::class.java)
-                        .addModifiers(Modifier.PUBLIC)
-                        .returns(UseAction::class.java)
-                        .addCode("return \$T.\$L;", UseAction::class.java, fromJson.useAction)
                         .build()
                 )
                 .addMethod(MethodSpec.methodBuilder("getMaxDamage")

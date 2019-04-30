@@ -1,0 +1,5 @@
+{
+  "io.github.cottonmc.contentgenerator.annotations.processor.DummyEvent": [
+    "io.github.cottonmc.modhelper.annotations.test.SimpleHandler"
+  ]
+}

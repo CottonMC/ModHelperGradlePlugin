@@ -52,6 +52,10 @@ gradlePlugin {
         }
     }
 }
+tasks.named<Test>("test") {
+    testLogging.showStackTraces = true
+    useJUnitPlatform()
+}
 
 val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {

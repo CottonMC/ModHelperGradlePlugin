@@ -33,6 +33,8 @@ dependencies {
     testCompile(
         "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion"
     )
+    // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-reflect
+    compile(group= "org.jetbrains.kotlin", name= "kotlin-reflect", version= "1.3.31")
 }
 
 publishing {

@@ -1,13 +1,11 @@
 package io.github.cottonmc.contentgenerator.data;
 
 import io.github.cottonmc.modhelper.api.ItemType;
-import io.github.cottonmc.modhelper.api.UseAction;
 
 import java.util.List;
 
 public class ItemTemplateDefinition {
 
-    private UseAction useAction = UseAction.NORMAL;
     private List<String> textures;
     private List<String> tags;
     private String modelParent;
@@ -23,9 +21,6 @@ public class ItemTemplateDefinition {
         this.modelParent = modelParent;
     }
 
-    public UseAction getUseAction() {
-        return useAction;
-    }
 
     public List<String> getTextures() {
         return textures;
@@ -47,11 +42,6 @@ public class ItemTemplateDefinition {
         return maxDamage;
     }
 
-    public ItemTemplateDefinition setUseAction(UseAction useAction) {
-        this.useAction = useAction;
-        return this;
-
-    }
 
     public ItemTemplateDefinition setColorOverride(int colorOverride) {
         this.colorOverride = colorOverride;
