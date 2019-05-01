@@ -18,10 +18,16 @@ class CottonEventsAnnotationProcessor : AbstractProcessor() {
         processingEnv.messager.printMessage(Diagnostic.Kind.NOTE, "Starting to process event handlers...")
 
 
-        val eventHandlers = HashMap<String, MutableList<String>>()
+        val eventHandlers = HashMap<String, Any>()
 
-        fun addHandler(eventType: String, handlerType: String) =
-            eventHandlers.getOrPut(eventType) { ArrayList() }.add(handlerType)
+        fun addHandler(eventType: String, handler: String,data:Map<String,Any>): Any {
+            val storedEvent = eventHandlers.getOrPut(eventType) { data }
+            val events = (storedEvent as MutableMap<String, Any>).getOrPut("handlers", { ArrayList<String>() })
+            (events as MutableList<String>).add(handler)
+
+            return storedEvent
+        }
+
         if (processed) return false
         loop@ for (element in roundEnv.getElementsAnnotatedWith(Subscribe::class.java)) {
             if (element !is TypeElement) {
@@ -48,10 +54,16 @@ class CottonEventsAnnotationProcessor : AbstractProcessor() {
                 false
             } ?: continue@loop
 
-            val eventDescriptor = typeMirror.getAnnotation(EventDescriptor::class.java)
+            val eventDescriptor = (typeMirror as DeclaredType).asElement().getAnnotation(EventDescriptor::class.java)
             addHandler(
                 eventType = (typeMirror as DeclaredType).toString(),
-                handlerType = getBinaryName(element)
+                handler = getBinaryName(element),
+                data = mapOf(
+                    "mixinString" to eventDescriptor.mixinString,
+                    "targetClass" to eventDescriptor.targetClass,
+                    "type" to eventDescriptor.type,
+                    "cancellable" to eventDescriptor.cancelleable
+                )
             )
         }
 

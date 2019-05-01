@@ -5,7 +5,7 @@
     "type": "BEFORE",
     "cancellable": false,
     "handlers": [
-      "io.github.cottonmc.modhelper.annotations.test.SimpleHandler"
+      "io.github.cottonmc.modhelper.annotations.test.SimpleHandler2"
     ]
   }
 }
