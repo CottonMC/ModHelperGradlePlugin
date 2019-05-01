@@ -1,5 +1,10 @@
 {
-  "io.github.cottonmc.contentgenerator.annotations.processor.DummyEvent": [
-    "io.github.cottonmc.modhelper.annotations.test.SimpleHandler"
-  ]
+  "io.github.cottonmc.contentgenerator.annotations.processor.DummyEvent": {
+    "io.github.cottonmc.modhelper.annotations.test.SimpleHandler": {
+      "mixinString": "dummy_string",
+      "targetClass": "java.lang.String",
+      "type": "BEFORE",
+      "cancellable": false
+    }
+  }
 }

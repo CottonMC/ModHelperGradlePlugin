@@ -11,6 +11,7 @@ pluginManagement {
 
 
 
-include 'annotations', 'processor', 'modhelper-api'
+include 'annotations', 'processor'//, 'modhelper-api'
 rootProject.name = 'mod-helper'
+include 'mod-helper-plugin'
 

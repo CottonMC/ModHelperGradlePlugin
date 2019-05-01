@@ -1,68 +1,55 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-   // id("fabric-loom") version "0.2.1-SNAPSHOT" apply false
+    id("fabric-loom") version "0.2.1-SNAPSHOT"
 
-    kotlin("jvm") version "1.3.30"
+    kotlin("jvm") version "1.3.30" apply false
     `java-gradle-plugin`
     `maven-publish`
 }
 
-group = "io.github.cottonmc"
-version = "0.0.1"
+allprojects{
 
+    repositories {
+        maven {
+            setUrl("http://maven.fabricmc.net/")
+            name = "Fabric"
+        }
+        maven {
+            setUrl("https://kotlin.bintray.com/kotlinx")
+            name = "Kotlin X"
+        }
+        maven {
+            setUrl("http://server.bbkr.space:8081/artifactory/libs-release")
+            name = "cotton"
+        }
+        maven {
+            setUrl("http://server.bbkr.space:8081/artifactory/libs-snapshot")
+            name = "cotton"
+        }
+        mavenCentral()
+        mavenLocal()
+    }
+}
 
-val junitPlatformVersion = "1.5.0-M1"
-val junitJupiterVersion = "5.5.0-M1"
+val minecraft_version: String by project
+val yarn_mappings: String by project
+val fabric_version: String by project
+val loader_version: String by project
 
 dependencies {
-    testCompile(gradleTestKit())
-    implementation(kotlin("stdlib-jdk8"))
-    compile("com.squareup:javapoet:1.11.1")
-    compile(group = "io.github.cottonmc", name = "json-factory", version = "0.4.1")
-    compile(group = "com.google.code.gson", name = "gson", version = "2.8.5")
-    // JUnit Jupiter API and TestEngine implementation
-    testCompile("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
+    minecraft("com.mojang:minecraft:$minecraft_version")
+    mappings("net.fabricmc:yarn:$yarn_mappings")
+    modCompile("net.fabricmc:fabric-loader:${loader_version}")
 
-    testCompile(group = "org.junit.platform", name = "junit-platform-launcher", version = junitPlatformVersion)
-    testCompile(group = "org.junit.platform", name = "junit-platform-runner", version = junitPlatformVersion)
-    testCompile(group = "com.google.testing.compile", name = "compile-testing", version = "0.15")
-    compile(project(":modhelper-api"))
     compile(project(":annotations"))
-    testCompile("org.junit-pioneer:junit-pioneer:0.3.0")
-    //implementation(group="com.google.auto.service",name="auto-service",version="1.0")
-    //annotationProcessor(group="com.google.auto.service",name="auto-service",version="1.0")
+   // modCompile("net.fabricmc:fabric:$fabric_version")
 }
 
-repositories {
-    mavenCentral()
-    mavenLocal()
-    maven {
-        this.setUrl("http://server.bbkr.space:8081/artifactory/libs-release")
-        name = "cotton"
-    }
-}
-
-gradlePlugin {
-    plugins {
-        create("cotton-mod-helper") {
-            id = "io.github.cottonmc.cotton-mod-helper"
-            implementationClass = "io.github.cottonmc.modhelper.ContentGeneratorPlugin"
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            artifactId = "mod-helper-api"
+            from(components["java"])
         }
     }
-}
-tasks.named<Test>("test") {
-    testLogging.showStackTraces = true
-    useJUnitPlatform()
-}
-
-val compileKotlin: KotlinCompile by tasks
-compileKotlin.kotlinOptions {
-    jvmTarget = "1.8"
-}
-
-val compileTestKotlin: KotlinCompile by tasks
-compileTestKotlin.kotlinOptions {
-    jvmTarget = "1.8"
 }
