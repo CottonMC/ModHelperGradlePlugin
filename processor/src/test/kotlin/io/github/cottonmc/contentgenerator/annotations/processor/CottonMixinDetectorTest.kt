@@ -16,11 +16,11 @@ internal class CottonMixinDetectorTest {
     @ParameterizedTest
     @ValueSource(
         strings = [
-            "io.github.cottonmc.modhelper.annotations.Initializer"
+            "org.spongepowered.asm.mixin.Mixin"
         ]
     )
     fun `The required annotations are all supported`(type: String) {
-        val supportedAnnotationTypes = CottonMixinDetector().supportedAnnotationTypes
+        val supportedAnnotationTypes = CottonMixinsAnnotationProcessor().supportedAnnotationTypes
         assertTrue(supportedAnnotationTypes.contains(type), "required annotation '$type' is not supported!")
     }
 
@@ -28,7 +28,7 @@ internal class CottonMixinDetectorTest {
     fun `Only java 8 is supported`() {
         assertEquals(
             SourceVersion.RELEASE_8,
-            CottonMixinDetector().supportedSourceVersion,
+            CottonMixinsAnnotationProcessor().supportedSourceVersion,
             "only java 8 should be supported!"
         )
     }

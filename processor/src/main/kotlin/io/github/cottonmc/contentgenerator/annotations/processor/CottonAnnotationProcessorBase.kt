@@ -8,8 +8,6 @@ abstract class CottonAnnotationProcessorBase: AbstractProcessor() {
     //only support release 8, we do not want to mess with mixins.
     override fun getSupportedSourceVersion() = SourceVersion.RELEASE_8
 
-
-
     protected fun getBinaryName(element: TypeElement): String =
         processingEnv.elementUtils.getBinaryName(element).toString()
 

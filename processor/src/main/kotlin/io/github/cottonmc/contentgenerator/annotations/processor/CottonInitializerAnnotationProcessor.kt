@@ -88,11 +88,9 @@ internal class CottonInitializerAnnotationProcessor : CottonAnnotationProcessorB
         Initializer::class.java.name
     )
 
-
     private enum class AutomaticEntrypointTypes(val markerInterface: String, val entrypointType: String) {
         MAIN(MOD_INITIALIZER, "main"),
         CLIENT(CLIENT_MOD_INITIALIZER, "client"),
         SERVER(SERVER_MOD_INITIALIZER, "server")
     }
-
 }
