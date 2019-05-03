@@ -39,7 +39,7 @@ internal class CottonMixinsAnnotationProcessor : CottonAnnotationProcessorBase()
         for (side in mixins.keys) {
             val initializerOutput = processingEnv.filer.createResource(
                 StandardLocation.SOURCE_OUTPUT,
-                "", "build/cotton/$side.txt"
+                "", "build/cotton/mixins/$side.txt"
             )
 
 
