@@ -1,12 +1,16 @@
 # mod-helper-gradle-plugin
-gradle plugin to automate some tasks around writing minecraft mods.
+Gradle plugin to automate some tasks around writing minecraft mods.
 
 
-Current features:
+## Current features
 
- - automatic fabric mod json generation
- - automatic mixin discovery (added to your jsons automatically)
+ - Automatic `fabric.mod.json` generation
+ - Automatic mixin discovery (added to your jsons automatically)
 
-WIP features:
+## WIP features
 
- - an event handling library for fabric
+ - An event handling library for Fabric
+
+## (Possibly) upcoming features
+
+ - Generation of MC data JSONs
