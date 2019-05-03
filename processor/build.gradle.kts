@@ -39,7 +39,7 @@ dependencies {
 
 publishing {
     publications {
-        create<MavenPublication>("maven") {
+        create<MavenPublication>("mod-helper-processor") {
             artifactId = "mod-helper-processor"
             from(components["java"])
         }

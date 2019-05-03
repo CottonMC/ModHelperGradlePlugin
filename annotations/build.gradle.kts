@@ -18,7 +18,7 @@ dependencies {
 
 publishing {
     publications {
-        create<MavenPublication>("maven") {
+        create<MavenPublication>("mod-helper-annotations") {
             artifactId = "mod-helper-annotations"
             from(components["java"])
         }

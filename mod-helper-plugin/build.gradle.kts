@@ -12,25 +12,17 @@ group = "io.github.cottonmc"
 version = "0.0.1"
 
 
-val junitPlatformVersion = "1.5.0-M1"
-val junitJupiterVersion = "5.5.0-M1"
 
 dependencies {
     testCompile(gradleTestKit())
     implementation(kotlin("stdlib-jdk8"))
-    compile(project(":"))
     compile("com.squareup:javapoet:1.11.1")
     compile(group = "io.github.cottonmc", name = "json-factory", version = "0.4.1")
     compile(group = "com.google.code.gson", name = "gson", version = "2.8.5")
-    // JUnit Jupiter API and TestEngine implementation
-    testCompile("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
-
-    testCompile(group = "org.junit.platform", name = "junit-platform-launcher", version = junitPlatformVersion)
-    testCompile(group = "org.junit.platform", name = "junit-platform-runner", version = junitPlatformVersion)
-    testCompile(group = "com.google.testing.compile", name = "compile-testing", version = "0.15")
     compile(project(":annotations"))
-    testCompile("org.junit-pioneer:junit-pioneer:0.3.0")
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+    testCompile(group= "commons-io", name= "commons-io", version= "2.6")
+
     //implementation(group="com.google.auto.service",name="auto-service",version="1.0")
     //annotationProcessor(group="com.google.auto.service",name="auto-service",version="1.0")
 }

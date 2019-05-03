@@ -12,7 +12,7 @@ import javax.lang.model.type.DeclaredType
 import javax.tools.Diagnostic
 import javax.tools.StandardLocation
 
-internal class CottonInitializerAnnotationProcessor : AbstractProcessor() {
+internal class CottonInitializerAnnotationProcessor : CottonAnnotationProcessorBase() {
     private var processed = false
 
     override fun process(annotations: MutableSet<out TypeElement>?, roundEnv: RoundEnvironment): Boolean {
@@ -88,8 +88,6 @@ internal class CottonInitializerAnnotationProcessor : AbstractProcessor() {
         Initializer::class.java.name
     )
 
-    //only support release 8, we do not want to mess with mixins.
-    override fun getSupportedSourceVersion() = SourceVersion.RELEASE_8
 
     private enum class AutomaticEntrypointTypes(val markerInterface: String, val entrypointType: String) {
         MAIN(MOD_INITIALIZER, "main"),
@@ -97,12 +95,4 @@ internal class CottonInitializerAnnotationProcessor : AbstractProcessor() {
         SERVER(SERVER_MOD_INITIALIZER, "server")
     }
 
-    private fun getBinaryName(element: TypeElement): String =
-        processingEnv.elementUtils.getBinaryName(element).toString()
-
-    companion object {
-        private const val MOD_INITIALIZER = "net.fabricmc.api.ModInitializer"
-        private const val CLIENT_MOD_INITIALIZER = "net.fabricmc.api.ClientModInitializer"
-        private const val SERVER_MOD_INITIALIZER = "net.fabricmc.api.DedicatedServerModInitializer"
-    }
 }

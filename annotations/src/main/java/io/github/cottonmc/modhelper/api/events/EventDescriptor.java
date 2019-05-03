@@ -27,12 +27,34 @@ public @interface EventDescriptor {
     EventType type();
 
     /**
-     * Weather or not this method can cancel the the original function call.
+     * The class of the value that could be returned
      * */
-    boolean cancelleable() default false;
+    String returnType() default "";
 
 
+    Side side() default Side.COMMON;
+    /**
+     * Describes the kind of behaviour has to be implemented in an event.
+     * {@link #BEFORE}
+     * {@link #AFTER}
+     * {@link #BEFORE_CANCELLABLE}
+     * */
     enum EventType{
-        BEFORE,AFTER
+        /**
+         * called at the beginning of the function, that we mix into
+         * * */
+        BEFORE
+        /**
+         * called after the function that we mix into
+         * */
+        ,AFTER
+        /**
+         * same as {@link #BEFORE}, but we gain the option to cancel the original call.
+         * */
+        , BEFORE_CANCELLABLE
+    }
+
+    enum Side{
+        CLIENT,SERVER,COMMON
     }
 }

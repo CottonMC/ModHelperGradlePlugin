@@ -1,10 +1,9 @@
-package io.github.cottonmc.modhelper
+package io.github.cottonmc.modhelper.tasks
 
 import io.github.cottonmc.modhelper.extension.ModHelperExtension
 import io.github.cottonmc.modhelper.generators.mod.FabricEntrypointContainer
 import io.github.cottonmc.modhelper.generators.mod.FabricModJson
 import io.github.cottonmc.modhelper.generators.mod.FabricModJsonGenerator
-import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import java.io.File
@@ -17,8 +16,6 @@ open class GenerateModJsonTask : CottonDefaultTask() {
             return resourceRoot.resolve("fabric.mod.json")
         }
 
-    @Input
-    var generatedInputPath = "build/classes/java/main/"
 
     @TaskAction
     fun generateModJson() {
@@ -43,6 +40,4 @@ open class GenerateModJsonTask : CottonDefaultTask() {
         output.writeText(generator.apply(fabricModJson))
     }
 
-    private fun getModHelperExtension(): ModHelperExtension =
-        project.extensions.getByType(ModHelperExtension::class.java)
 }

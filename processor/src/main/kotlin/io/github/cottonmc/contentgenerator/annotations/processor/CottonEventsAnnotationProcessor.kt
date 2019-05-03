@@ -3,15 +3,19 @@ package io.github.cottonmc.contentgenerator.annotations.processor
 import com.google.gson.Gson
 import io.github.cottonmc.modhelper.api.events.Subscribe
 import io.github.cottonmc.modhelper.api.events.EventDescriptor
+import java.lang.reflect.Method
 import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.SourceVersion
+import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
 import javax.lang.model.type.DeclaredType
+import javax.lang.model.type.ExecutableType
+import javax.lang.model.type.TypeMirror
 import javax.tools.Diagnostic
 import javax.tools.StandardLocation
 
-class CottonEventsAnnotationProcessor : AbstractProcessor() {
+class CottonEventsAnnotationProcessor : CottonAnnotationProcessorBase() {
     private var processed = false
 
     override fun process(p0: MutableSet<out TypeElement>, roundEnv: RoundEnvironment): Boolean {
@@ -20,7 +24,7 @@ class CottonEventsAnnotationProcessor : AbstractProcessor() {
 
         val eventHandlers = HashMap<String, Any>()
 
-        fun addHandler(eventType: String, handler: String,data:Map<String,Any>): Any {
+        fun addHandler(eventType: String, handler: String, data: Map<String, Any>): Any {
             val storedEvent = eventHandlers.getOrPut(eventType) { data }
             val events = (storedEvent as MutableMap<String, Any>).getOrPut("handlers", { ArrayList<String>() })
             (events as MutableList<String>).add(handler)
@@ -53,16 +57,23 @@ class CottonEventsAnnotationProcessor : AbstractProcessor() {
                 }
                 false
             } ?: continue@loop
+            typeMirror as DeclaredType
 
-            val eventDescriptor = (typeMirror as DeclaredType).asElement().getAnnotation(EventDescriptor::class.java)
+            val eventDescriptor = typeMirror.asElement().getAnnotation(EventDescriptor::class.java)
+
+
+            val method= typeMirror.asElement().enclosedElements[0]
+
             addHandler(
-                eventType = (typeMirror as DeclaredType).toString(),
+                eventType = typeMirror.toString(),
                 handler = getBinaryName(element),
                 data = mapOf(
                     "mixinString" to eventDescriptor.mixinString,
                     "targetClass" to eventDescriptor.targetClass,
                     "type" to eventDescriptor.type,
-                    "cancellable" to eventDescriptor.cancelleable
+                    "returnValue" to eventDescriptor.returnType,
+                    "side" to eventDescriptor.side.toString(),
+                    "handlerMethod" to method.toString()
                 )
             )
         }
@@ -83,13 +94,7 @@ class CottonEventsAnnotationProcessor : AbstractProcessor() {
         return processed
     }
 
-    private fun getBinaryName(element: TypeElement): String =
-        processingEnv.elementUtils.getBinaryName(element).toString()
-
     override fun getSupportedAnnotationTypes() = setOf(
         Subscribe::class.java.name
     )
-
-    //only support release 8, we do not want to mess with mixins.
-    override fun getSupportedSourceVersion() = SourceVersion.RELEASE_8
 }
