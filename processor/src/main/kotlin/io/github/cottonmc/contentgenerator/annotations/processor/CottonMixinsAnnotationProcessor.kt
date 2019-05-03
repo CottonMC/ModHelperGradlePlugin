@@ -21,9 +21,11 @@ internal class CottonMixinsAnnotationProcessor : CottonAnnotationProcessorBase()
         fun addMixin(side: String, mixin: String) =
             mixins.getOrPut(side) { ArrayList() }.add(mixin)
 
-        val mixinAnnotation = processingEnv.elementUtils.getTypeElement(MIXIN)
+        for (element in roundEnv.getElementsAnnotatedWith(Subscribe::class.java)) {
+            if (element.annotationMirrors.none { getBinaryName(it.annotationType.asElement() as TypeElement) == MIXIN }) {
+                continue
+            }
 
-        for (element in roundEnv.getElementsAnnotatedWith(mixinAnnotation)) {
             val reference: String = getBinaryName(element as TypeElement)
             val sidedAnnotation = element.getAnnotation(Sided::class.java)
             val side = sidedAnnotation?.value ?: Side.COMMON

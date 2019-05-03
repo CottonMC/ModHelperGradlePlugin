@@ -91,7 +91,7 @@ class CottonEventsAnnotationProcessor : CottonAnnotationProcessorBase() {
 
         processed = true
 
-        return processed
+        return false
     }
 
     override fun getSupportedAnnotationTypes() = setOf(
