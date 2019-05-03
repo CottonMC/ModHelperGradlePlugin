@@ -1,4 +1,4 @@
-package io.github.cottonmc.modhelper.annotations;
+package io.github.cottonmc.modhelper.api.initializer;
 
 /**
  * Common entrypoint types.

@@ -1,7 +1,7 @@
 package io.github.cottonmc.modhelper.annotations.test;
 
 import io.github.cottonmc.contentgenerator.annotations.processor.DummyEvent;
-import io.github.cottonmc.modhelper.annotations.Subscribe;
+import io.github.cottonmc.modhelper.api.events.Subscribe;
 
 @Subscribe
 class SimpleHandler2 implements DummyEvent{

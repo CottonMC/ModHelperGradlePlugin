@@ -15,7 +15,7 @@ import org.junit.jupiter.params.provider.ValueSource
 import javax.lang.model.SourceVersion
 import javax.tools.StandardLocation
 
-internal class CottonAnnotationProcessorTest {
+internal class CottonInitializerAnnotationProcessorTest {
 
 
     @BeforeEach
@@ -40,7 +40,7 @@ internal class CottonAnnotationProcessorTest {
         val executables = ArrayList<Executable>()
         compilationTest()
             .addSources(JavaFileObjectUtils.readFromResource("/cottonmodhelper/moddetector/$source.java"))
-            .addProcessors(CottonAnnotationProcessor::class.java)
+            .addProcessors(CottonInitializerAnnotationProcessor::class.java)
             .compilationShouldSucceed()
             .expectedFileObjectExists(
                 StandardLocation.SOURCE_OUTPUT,
@@ -79,7 +79,7 @@ internal class CottonAnnotationProcessorTest {
         ]
     )
     fun `The required annotations are all supported`(type: String) {
-        val supportedAnnotationTypes = CottonAnnotationProcessor().supportedAnnotationTypes
+        val supportedAnnotationTypes = CottonInitializerAnnotationProcessor().supportedAnnotationTypes
         assertTrue(supportedAnnotationTypes.contains(type), "required annotation '$type' is not supported!")
     }
 
@@ -87,7 +87,7 @@ internal class CottonAnnotationProcessorTest {
     fun `Only java 8 is supported`() {
         assertEquals(
             SourceVersion.RELEASE_8,
-            CottonAnnotationProcessor().supportedSourceVersion,
+            CottonInitializerAnnotationProcessor().supportedSourceVersion,
             "only java 8 should be supported!"
         )
     }

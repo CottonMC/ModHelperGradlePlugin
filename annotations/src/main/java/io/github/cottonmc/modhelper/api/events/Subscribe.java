@@ -1,4 +1,4 @@
-package io.github.cottonmc.modhelper.annotations;
+package io.github.cottonmc.modhelper.api.events;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,7 +1,7 @@
 package io.github.cottonmc.contentgenerator.annotations.processor
 
 import com.google.gson.Gson
-import io.github.cottonmc.modhelper.annotations.Subscribe
+import io.github.cottonmc.modhelper.api.events.Subscribe
 import io.github.cottonmc.modhelper.api.events.EventDescriptor
 import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.RoundEnvironment

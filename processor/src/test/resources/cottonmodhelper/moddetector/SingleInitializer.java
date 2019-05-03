@@ -1,6 +1,6 @@
 package io.github.cottonmc.modhelper.annotations.test;
 
-import io.github.cottonmc.modhelper.annotations.Initializer;
+import io.github.cottonmc.modhelper.api.initializer.Initializer;
 import net.fabricmc.api.ModInitializer;
 
 // Should output:

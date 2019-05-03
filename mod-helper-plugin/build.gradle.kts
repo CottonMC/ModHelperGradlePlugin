@@ -18,6 +18,7 @@ val junitJupiterVersion = "5.5.0-M1"
 dependencies {
     testCompile(gradleTestKit())
     implementation(kotlin("stdlib-jdk8"))
+    compile(project(":"))
     compile("com.squareup:javapoet:1.11.1")
     compile(group = "io.github.cottonmc", name = "json-factory", version = "0.4.1")
     compile(group = "com.google.code.gson", name = "gson", version = "2.8.5")
