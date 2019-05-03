@@ -2,6 +2,7 @@ package io.github.cottonmc.modhelper
 
 import io.github.cottonmc.modhelper.extension.AnnotationProcessor
 import io.github.cottonmc.modhelper.extension.ModHelperExtension
+import io.github.cottonmc.modhelper.tasks.EventGeneratorTask
 import io.github.cottonmc.modhelper.tasks.GenerateModJsonTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -28,6 +29,7 @@ open class ContentGeneratorPlugin : Plugin<Project> {
 
         val generateModJson = target.tasks.create("generateModJson", GenerateModJsonTask::class.java)
 
+        val eventGeneratorTask = target.tasks.create("generateMixins", EventGeneratorTask::class.java)
         // Set up defaults for fabric.mod.json
         extension.modid = target.name.replace(" ","_").toLowerCase(Locale.ROOT)
         extension.modName = target.name
@@ -59,7 +61,8 @@ open class ContentGeneratorPlugin : Plugin<Project> {
 
             // Make sure that the annotation processor gets run before generateModJson
             generateModJson.dependsOn(target.tasks.getByName("compileJava"))
-
+            //make sure that the event generator compiles the code, and runs after everything was processed.
+            eventGeneratorTask.dependsOn(target.tasks.getByName("compileJava"))
             // Remove build/cotton files made by the annotation processor from the output.
             // This build/cotton is NOT related to the build/cotton in ModHelperExtension!
             if (!extension.debug) {
