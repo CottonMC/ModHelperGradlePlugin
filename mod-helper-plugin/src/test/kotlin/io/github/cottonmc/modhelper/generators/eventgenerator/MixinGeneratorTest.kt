@@ -1,10 +1,9 @@
 package io.github.cottonmc.modhelper.generators.eventgenerator
 
 import org.apache.commons.io.FileUtils
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junitpioneer.jupiter.TempDirectory
 import java.io.File
@@ -30,6 +29,29 @@ internal class MixinGeneratorTest {
     @Test
     fun `with one handler in the descriptor`() {
         val source = File(javaClass.getResource("/SimpeHandler2.json").file)
+        FileUtils.copyFile(source, File("$directory/generated/eventhandlers.json"))
+
+        mixinGenerator.generate()
+        fun listDirectory(file: File) {
+            if (file.isDirectory) {
+                file.listFiles().forEach {
+                    listDirectory(it)
+                }
+            } else
+                println(file)
+        }
+        listDirectory(directory.toFile())
+
+        File("$directory/io/github/cottonmc/test/mixin/DummyEventTest.java")
+            .apply {
+                assertTrue(exists(), "the mixin source was not generated")
+                println(readText())
+            }
+    }
+
+    @Test
+    fun `with two handlers in the descriptor`() {
+        val source = File(javaClass.getResource("/SimpeHandlerDouble.json").file)
         FileUtils.copyFile(source, File("$directory/generated/eventhandlers.json"))
 
         mixinGenerator.generate()

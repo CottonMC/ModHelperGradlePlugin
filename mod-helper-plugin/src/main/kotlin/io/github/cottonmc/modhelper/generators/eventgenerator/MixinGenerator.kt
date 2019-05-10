@@ -21,9 +21,11 @@ class MixinGenerator(
     private val injectAnnotation = ClassName.get("org.spongepowered.asm.mixin.injection", "Inject")
     private val atAnnotation = ClassName.get("import org.spongepowered.asm.mixin.injection", "At")
     private val callBackInfo = ClassName.get("org.spongepowered.asm.mixin.injection.callback", "CallbackInfoReturnable")
+    private val eventControl = ClassName.get("io.github.cottonmc.modhelper.api.events", "EventControl")
 
     fun generate() {
         val eventSource = File("$generatedFolder/eventhandlers.json")
+
         if (!eventSource.exists())
             return
 
@@ -51,7 +53,7 @@ class MixinGenerator(
                     else -> {
                         val returnNameParts = returnName.split(".")
                         val returnPackage =
-                            returnNameParts.subList(0, eventNameParts.size - 1).joinToString(separator = ".")
+                            returnNameParts.dropLast(1).joinToString(separator = ".")
                         ClassName.get(returnPackage, returnNameParts.last())
                     }
                 }
@@ -123,7 +125,7 @@ class MixinGenerator(
             handlerMethod.addParameter(
                 ParameterSpec
                     .builder(
-                        cir,"cir"
+                        cir, "cir"
                     ).build()
             )
 
@@ -133,6 +135,11 @@ class MixinGenerator(
                         .addMember("value", CodeBlock.of("{ $target.class }"))
                         .build()
                 )
+
+            if (type == EventDescriptor.EventType.BEFORE_CANCELLABLE) {
+                handlerMethod.addCode("\$T control = new \$T;\n", eventControl, eventControl)
+            }
+
             var index = 0
             handlers.forEach {
                 val handlerClass = it.asString
@@ -155,14 +162,29 @@ class MixinGenerator(
                 for (i in 0 until parameterCount) {
                     params += "param$i,"
                 }
-                params = params.dropLast(1)
+                if (type == EventDescriptor.EventType.BEFORE_CANCELLABLE
+                ) {
+                    params += "control"
+                } else {
+                    params = params.dropLast(1)
+                }
 
                 handlerMethod.addCode(
-                    "handler$index.${methodData[0]}($params);"
+                    "handler$index.${methodData[0]}($params);\n"
                 )
 
                 index++
             }
+            if (type == EventDescriptor.EventType.BEFORE_CANCELLABLE) {
+                handlerMethod.addCode("\nif(control.isCancelled()){\n    cir.cancel();\n}\n", eventControl)
+            } else if (type == EventDescriptor.EventType.BEFORE && returnName.isNotBlank()) {
+                handlerMethod.addCode("\nOptional<\$T> result = control.getOverridenReturnValue()", returnType)
+                handlerMethod.addCode(
+                    "\nif(result.isPresent()){\n    cir.setReturnValue(result.get());\n}\n",
+                    eventControl
+                )
+            }
+
             index = 0
 
             val mixinClass = rawMixinClass
@@ -172,9 +194,10 @@ class MixinGenerator(
 
             JavaFile
                 .builder(packageName, mixinClass)
-
                 .build()
                 .writeTo(File(generatedSourceFolder))
+
+
         }
     }
 }

@@ -2,9 +2,7 @@ package io.github.cottonmc.contentgenerator.annotations.processor
 
 import com.google.gson.Gson
 import io.github.cottonmc.modhelper.api.initializer.Initializer
-import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.RoundEnvironment
-import javax.lang.model.SourceVersion
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.TypeElement
 import javax.lang.model.element.VariableElement
@@ -13,10 +11,8 @@ import javax.tools.Diagnostic
 import javax.tools.StandardLocation
 
 internal class CottonInitializerAnnotationProcessor : CottonAnnotationProcessorBase() {
-    private var processed = false
 
-    override fun process(annotations: MutableSet<out TypeElement>?, roundEnv: RoundEnvironment): Boolean {
-        if (processed) return false
+    override fun doProcess(annotations: MutableSet<out TypeElement>?, roundEnv: RoundEnvironment) {
         processingEnv.messager.printMessage(Diagnostic.Kind.NOTE, "[Cotton] Processing initializers...")
 
         val initializers = HashMap<String, MutableList<Any>>()
@@ -78,10 +74,6 @@ internal class CottonInitializerAnnotationProcessor : CottonAnnotationProcessorB
         initializerOutput.openWriter().use {
             it.write(gson.toJson(initializers))
         }
-
-        processed = true
-
-        return false
     }
 
     override fun getSupportedAnnotationTypes() = setOf(

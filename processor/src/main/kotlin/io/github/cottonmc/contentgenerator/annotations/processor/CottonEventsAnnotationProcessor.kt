@@ -1,24 +1,17 @@
 package io.github.cottonmc.contentgenerator.annotations.processor
 
 import com.google.gson.Gson
-import io.github.cottonmc.modhelper.api.events.Subscribe
 import io.github.cottonmc.modhelper.api.events.EventDescriptor
-import java.lang.reflect.Method
-import javax.annotation.processing.AbstractProcessor
+import io.github.cottonmc.modhelper.api.events.Subscribe
 import javax.annotation.processing.RoundEnvironment
-import javax.lang.model.SourceVersion
-import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
 import javax.lang.model.type.DeclaredType
-import javax.lang.model.type.ExecutableType
-import javax.lang.model.type.TypeMirror
 import javax.tools.Diagnostic
 import javax.tools.StandardLocation
 
 class CottonEventsAnnotationProcessor : CottonAnnotationProcessorBase() {
-    private var processed = false
 
-    override fun process(p0: MutableSet<out TypeElement>, roundEnv: RoundEnvironment): Boolean {
+    override fun doProcess(annotations: MutableSet<out TypeElement>?, roundEnv: RoundEnvironment) {
         processingEnv.messager.printMessage(Diagnostic.Kind.NOTE, "Starting to process event handlers...")
 
 
@@ -32,7 +25,6 @@ class CottonEventsAnnotationProcessor : CottonAnnotationProcessorBase() {
             return storedEvent
         }
 
-        if (processed) return false
         loop@ for (element in roundEnv.getElementsAnnotatedWith(Subscribe::class.java)) {
             if (element !is TypeElement) {
                 processingEnv.messager.printMessage(
@@ -89,9 +81,6 @@ class CottonEventsAnnotationProcessor : CottonAnnotationProcessorBase() {
             it.write(gson.toJson(eventHandlers))
         }
 
-        processed = true
-
-        return false
     }
 
     override fun getSupportedAnnotationTypes() = setOf(

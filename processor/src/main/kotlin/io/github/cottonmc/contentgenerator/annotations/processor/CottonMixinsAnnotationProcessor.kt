@@ -1,24 +1,21 @@
 package io.github.cottonmc.contentgenerator.annotations.processor
 
+import io.github.cottonmc.contentgenerator.data.FabricModJsonManager
 import io.github.cottonmc.modhelper.api.events.Subscribe
 import io.github.cottonmc.modhelper.api.side.Side
 import io.github.cottonmc.modhelper.api.side.Sided
-import java.util.Locale
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.TypeElement
 import javax.tools.Diagnostic
-import javax.tools.StandardLocation
 
 internal class CottonMixinsAnnotationProcessor : CottonAnnotationProcessorBase() {
-    private var processed = false
 
-    override fun process(annotations: MutableSet<out TypeElement>?, roundEnv: RoundEnvironment): Boolean {
-        if (processed) return false
+    override fun doProcess(annotations: MutableSet<out TypeElement>?, roundEnv: RoundEnvironment) {
         processingEnv.messager.printMessage(Diagnostic.Kind.NOTE, "[Cotton] Processing mixins...")
 
-        val mixins = HashMap<String, MutableList<String>>()
+        val mixins = HashMap<Side, MutableList<String>>()
 
-        fun addMixin(side: String, mixin: String) =
+        fun addMixin(side: Side, mixin: String) =
             mixins.getOrPut(side) { ArrayList() }.add(mixin)
 
         for (element in roundEnv.getElementsAnnotatedWith(Subscribe::class.java)) {
@@ -31,28 +28,14 @@ internal class CottonMixinsAnnotationProcessor : CottonAnnotationProcessorBase()
             val side = sidedAnnotation?.value ?: Side.COMMON
 
             addMixin(
-                side.name.toLowerCase(Locale.ENGLISH),
+                side,
                 reference
             )
         }
 
-        for (side in mixins.keys) {
-            val initializerOutput = processingEnv.filer.createResource(
-                StandardLocation.SOURCE_OUTPUT,
-                "", "build/cotton/mixins/$side.txt"
-            )
-
-
-            initializerOutput.openWriter().use {
-                for (mixin in mixins[side]!!) {
-                    it.write("$mixin\n")
-                }
-            }
+        mixins.forEach {
+            FabricModJsonManager.createMixinFor(processingEnv, it.key, it.value.toTypedArray())
         }
-
-        processed = true
-
-        return false
     }
 
     override fun getSupportedAnnotationTypes() = setOf(Subscribe::class.java.name)

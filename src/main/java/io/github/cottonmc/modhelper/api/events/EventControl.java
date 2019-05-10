@@ -5,23 +5,22 @@ import java.util.Optional;
 public class EventControl<T> {
 
     private boolean cancelled = false;
-    private T overridenReturnValue= null;
+    private T overridenReturnValue = null;
 
     public void cancel() {
         cancelled = true;
     }
 
-    boolean isCancelled() {
+    public boolean isCancelled() {
         return cancelled;
-
     }
 
-    public void overrideReturnValue(T returnValue){
+    public void overrideReturnValue(T returnValue) {
         overridenReturnValue = returnValue;
     }
 
-    Optional<T> getOverridenReturnValue(){
-        if(overridenReturnValue == null){
+    Optional<T> getOverridenReturnValue() {
+        if (overridenReturnValue == null) {
             return Optional.empty();
         }
         return Optional.of(overridenReturnValue);
