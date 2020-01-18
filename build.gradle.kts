@@ -1,14 +1,14 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    //id("fabric-loom") version "0.2.1-SNAPSHOT"
-
     kotlin("jvm") version "1.3.30" apply false
     `java-gradle-plugin`
+    id("fabric-loom") version "0.2.6-SNAPSHOT"
     //`maven-publish`
 }
 
 allprojects {
-    apply(plugin="java")
+    apply(plugin = "java")
 
     repositories {
         maven {
@@ -51,20 +51,16 @@ val fabric_version: String by project
 val loader_version: String by project
 
 dependencies {
-    /* minecraft("com.mojang:minecraft:$minecraft_version")
-     mappings("net.fabricmc:yarn:$yarn_mappings")
-     modCompile("net.fabricmc:fabric-loader:${loader_version}")
- */
+    minecraft("com.mojang:minecraft:${minecraft_version}")
+    mappings("net.fabricmc:yarn:${yarn_mappings}")
+    modCompile("net.fabricmc:fabric-loader:${loader_version}")
+    modApi("net.fabricmc.fabric-api:fabric-api:$fabric_version")
+
     compile(project(":annotations"))
-   // modCompile("net.fabricmc:fabric:$fabric_version")
+    include(project(":annotations"))
 }
-/*
-publishing {
-    publications {
-        create<MavenPublication>("mod-helper-api") {
-            artifactId = "mod-helper-api"
-            from(components["java"])
-        }
-    }
+
+tasks.withType<KotlinCompile>().configureEach {
+    kotlinOptions.suppressWarnings = true
+    kotlinOptions.jvmTarget = "1.8"
 }
-*/

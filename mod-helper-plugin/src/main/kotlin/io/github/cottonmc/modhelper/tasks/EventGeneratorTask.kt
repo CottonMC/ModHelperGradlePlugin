@@ -1,6 +1,5 @@
 package io.github.cottonmc.modhelper.tasks
 
-import io.github.cottonmc.modhelper.generators.eventgenerator.MixinGenerator
 import org.gradle.api.tasks.TaskAction
 
 open class EventGeneratorTask : CottonDefaultTask() {

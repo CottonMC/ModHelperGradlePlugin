@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     java
     kotlin("jvm")
@@ -21,6 +23,7 @@ dependencies {
     api(kotlin("stdlib-jdk8"))
     api(project(":annotations"))
     implementation("com.google.code.gson:gson:2.8.5")
+    compile("com.squareup:javapoet:1.11.1")
 
     // JUnit Jupiter API and TestEngine implementation
     testCompile("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
@@ -44,4 +47,10 @@ publishing {
             from(components["java"])
         }
     }
+}
+
+
+tasks.withType<KotlinCompile>().configureEach {
+    kotlinOptions.suppressWarnings = true
+    kotlinOptions.jvmTarget = "1.8"
 }

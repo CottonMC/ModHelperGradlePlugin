@@ -7,9 +7,10 @@ plugins {
     `java-gradle-plugin`
     `maven-publish`
 }
+val mod_version: String by project
 
 group = "io.github.cottonmc"
-version = "0.0.1"
+version = mod_version
 
 
 

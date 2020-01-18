@@ -1,31 +1,25 @@
 package io.github.cottonmc.contentgenerator.annotations.processor
 
-import com.google.gson.Gson
-import io.github.cottonmc.modhelper.api.events.EventDescriptor
-import io.github.cottonmc.modhelper.api.events.Subscribe
+import io.github.cottonmc.modhelper.api.annotations.events.EventDescriptor
+import io.github.cottonmc.modhelper.api.annotations.events.Subscribe
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.TypeElement
 import javax.lang.model.type.DeclaredType
 import javax.tools.Diagnostic
-import javax.tools.StandardLocation
+import java.util.*
+import javax.lang.model.element.Element
+import kotlin.collections.HashMap
+
 
 class CottonEventsAnnotationProcessor : CottonAnnotationProcessorBase() {
+
 
     override fun doProcess(annotations: MutableSet<out TypeElement>?, roundEnv: RoundEnvironment) {
         processingEnv.messager.printMessage(Diagnostic.Kind.NOTE, "Starting to process event handlers...")
 
+        val handlers = HashMap<DeclaredType, ArrayList<Element>>()
 
-        val eventHandlers = HashMap<String, Any>()
-
-        fun addHandler(eventType: String, handler: String, data: Map<String, Any>): Any {
-            val storedEvent = eventHandlers.getOrPut(eventType) { data }
-            val events = (storedEvent as MutableMap<String, Any>).getOrPut("handlers", { ArrayList<String>() })
-            (events as MutableList<String>).add(handler)
-
-            return storedEvent
-        }
-
-        loop@ for (element in roundEnv.getElementsAnnotatedWith(Subscribe::class.java)) {
+        loop@ for (element in roundEnv.getElementsAnnotatedWith(io.github.cottonmc.modhelper.api.annotations.Subscribe::class.java)) {
             if (element !is TypeElement) {
                 processingEnv.messager.printMessage(
                     Diagnostic.Kind.ERROR,
@@ -37,7 +31,8 @@ class CottonEventsAnnotationProcessor : CottonAnnotationProcessorBase() {
             val typeMirror = element.interfaces.firstOrNull { mirror ->
 
                 if (mirror is DeclaredType) {
-                    val annotations = mirror.asElement().getAnnotationsByType(EventDescriptor::class.java)
+                    val annotations = mirror.asElement()
+                        .getAnnotationsByType(io.github.cottonmc.modhelper.api.annotations.EventDescriptor::class.java)
                     if (annotations.isEmpty()) {
                         processingEnv.messager.printMessage(
                             Diagnostic.Kind.WARNING,
@@ -49,41 +44,35 @@ class CottonEventsAnnotationProcessor : CottonAnnotationProcessorBase() {
                 }
                 false
             } ?: continue@loop
-            typeMirror as DeclaredType
 
-            val eventDescriptor = typeMirror.asElement().getAnnotation(EventDescriptor::class.java)
-
-
-            val method= typeMirror.asElement().enclosedElements[0]
-
-            addHandler(
-                eventType = typeMirror.toString(),
-                handler = getBinaryName(element),
-                data = mapOf(
-                    "mixinString" to eventDescriptor.mixinString,
-                    "targetClass" to eventDescriptor.targetClass,
-                    "type" to eventDescriptor.type,
-                    "returnValue" to eventDescriptor.returnType,
-                    "side" to eventDescriptor.side.toString(),
-                    "handlerMethod" to method.toString()
-                )
-            )
+            typeMirror
+            val eventDescriptor = typeMirror.asElement()
+                .getAnnotation(io.github.cottonmc.modhelper.api.annotations.EventDescriptor::class.java)
+            handlers.getOrDefault(typeMirror, ArrayList()).add(element)
         }
 
-        val initializerOutput = processingEnv.filer.createResource(
-            StandardLocation.SOURCE_OUTPUT,
-            "", "build/cotton/eventhandlers.json"
-        )
-
-        val gson = Gson()
-
-        initializerOutput.openWriter().use {
-            it.write(gson.toJson(eventHandlers))
-        }
 
     }
 
-    override fun getSupportedAnnotationTypes() = setOf(
-        Subscribe::class.java.name
+    override fun getOwnedAnnotations(): MutableSet<String> = mutableSetOf(
+        io.github.cottonmc.modhelper.api.annotations.Subscribe::class.java.canonicalName
     )
+
+    //mixin annotation
+    internal class templateMixin {
+
+        //not implemented here
+        interface handler {
+            fun handle(arg: String)
+        }
+
+        val services = ServiceLoader.load(handler::class.java)
+
+        //inject annotation
+        fun run(arg: String) {
+            for (service in services) {
+                service.handle(arg)
+            }
+        }
+    }
 }

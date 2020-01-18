@@ -1,7 +1,6 @@
 package io.github.cottonmc.contentgenerator.data
 
 import com.google.gson.Gson
-import io.github.cottonmc.modhelper.api.side.Side
 import javax.annotation.processing.ProcessingEnvironment
 import javax.tools.StandardLocation
 

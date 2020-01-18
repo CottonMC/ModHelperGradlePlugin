@@ -1,7 +1,7 @@
 package io.github.cottonmc.modhelper.annotations.test;
 
 import io.github.cottonmc.contentgenerator.annotations.processor.DummyEvent;
-import io.github.cottonmc.modhelper.api.events.Subscribe;
+import io.github.cottonmc.modhelper.api.annotations.events.Subscribe;
 import java.util.*;
 
 @Subscribe

@@ -1,7 +1,7 @@
 package io.github.cottonmc.contentgenerator.annotations.processor
 
 import com.google.gson.Gson
-import io.github.cottonmc.modhelper.api.initializer.Initializer
+import io.github.cottonmc.modhelper.api.annotations.initializer.Initializer
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.TypeElement
@@ -20,7 +20,7 @@ internal class CottonInitializerAnnotationProcessor : CottonAnnotationProcessorB
         fun addInitializer(entrypointType: String, initializer: Any) =
             initializers.getOrPut(entrypointType) { ArrayList() }.add(initializer)
 
-        loop@ for (element in roundEnv.getElementsAnnotatedWith(Initializer::class.java)) {
+        loop@ for (element in roundEnv.getElementsAnnotatedWith(io.github.cottonmc.modhelper.api.annotations.Initializer::class.java)) {
             val reference: String = when (element) {
                 is TypeElement -> getBinaryName(element)
                 is ExecutableElement -> getBinaryName(element.enclosingElement as TypeElement) + "::" +
@@ -34,7 +34,7 @@ internal class CottonInitializerAnnotationProcessor : CottonAnnotationProcessorB
                 }
             }
 
-            val annotation = element.getAnnotation(Initializer::class.java)
+            val annotation = element.getAnnotation(io.github.cottonmc.modhelper.api.annotations.Initializer::class.java)
             var entrypointType = annotation.value
 
             if (entrypointType.isEmpty()) {
@@ -77,7 +77,7 @@ internal class CottonInitializerAnnotationProcessor : CottonAnnotationProcessorB
     }
 
     override fun getSupportedAnnotationTypes() = setOf(
-        Initializer::class.java.name
+        io.github.cottonmc.modhelper.api.annotations.Initializer::class.java.name
     )
 
     private enum class AutomaticEntrypointTypes(val markerInterface: String, val entrypointType: String) {
